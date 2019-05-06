@@ -1,0 +1,23 @@
+{
+  "name": "github-avatar-downloader",
+  "version": "1.0.0",
+  "description": "A command line node app that uses HTTP to retrieve content from GitHub using their API and writes content to disk.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gitvijayy/github-avatar-downloader.git"
+  },
+  "author": "Vijay",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gitvijayy/github-avatar-downloader/issues"
+  },
+  "homepage": "https://github.com/gitvijayy/github-avatar-downloader#readme",
+  "keywords": [],
+  "dependencies": {
+    "request": "^2.88.0"
+  }
+}
