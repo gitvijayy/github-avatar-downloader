@@ -1,5 +1,6 @@
 var request = require('request');
 var token = require('./secrets');
+var fs = require('fs');
 
 console.log('Welcome to the GitHub Avatar Downloader!');
 
@@ -10,20 +11,33 @@ function getRepoContributors(repoOwner, repoName, cb) {
       'User-Agent': 'request',
       'Authorization': "token " + token.GITHUB_TOKEN
     }
-
   };
 
-  request(options, function(err, res, body) {
+  request(options, function (err, res, body) {
     body = JSON.parse(body);
     cb(err, body);
   });
 }
 
-getRepoContributors("jquery", "jquery", function(err, result) {
+getRepoContributors("jquery", "jquery", function (err, result) {
   console.log("Errors:", err);
   result.forEach(element => {
-    console.log(element.avatar_url);
+    let path = "./avatars/" + element.login + ".jpg";
+    downloadImageByURL(element.avatar_url, path);
   });
-  //console.log("Result:", result);
-  //console.log(token.GITHUB_TOKEN)
 });
+
+function downloadImageByURL(url, filePath) {
+  request.get(url)
+    .on('error', function (err) {
+      throw err;
+    })
+    .on('response', function (response) {
+      console.log("Downloading! " + url);
+    })//.on('end', function () {
+    //  console.log("Downloaded!" + url);
+    //})
+    .pipe(fs.createWriteStream(filePath));
+}
+
+
