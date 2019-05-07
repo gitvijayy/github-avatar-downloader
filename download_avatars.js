@@ -3,17 +3,12 @@ var token = require('./secrets');
 var fs = require('fs');
 const gitRepo = {owner: process.argv[2], repo: process.argv[3]};
 
+if (!gitRepo.owner || !gitRepo.repo) {
+  console.log("Wrong number of arguments!!\nCorrect Format: node download_avatars.js owner repo");  
+  return;
+}
+
 console.log('Welcome to the GitHub Avatar Downloader!');
-
-if (!gitRepo.owner) {
-  console.log("Wrong Arguments");
-  return;
-}
-if (!gitRepo.repo) {
-  console.log("Wrong Arguments");
-  return;
-}
-
 
 function getRepoContributors(repoOwner, repoName, cb) {
   var options = {
@@ -36,7 +31,6 @@ getRepoContributors(gitRepo.owner, gitRepo.repo, function (err, result) {
     let path = "./avatars/" + element.login + ".jpg";
     downloadImageByURL(element.avatar_url, path);
   });
-  //console.log("downloaded");
 });
 
 function downloadImageByURL(url, filePath) {
@@ -46,9 +40,7 @@ function downloadImageByURL(url, filePath) {
     })
     .on('response', function (response) {
       console.log("Downloading! " + url);
-    })//.on('end', function () {
-    //  console.log("Downloaded!" + url);
-    //})
+    })
     .pipe(fs.createWriteStream(filePath));
 }
 
