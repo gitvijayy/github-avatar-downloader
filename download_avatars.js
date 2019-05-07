@@ -1,10 +1,10 @@
 var request = require('request');
 var token = require('./secrets');
 var fs = require('fs');
-const gitRepo = {owner: process.argv[2], repo: process.argv[3]};
+const gitRepo = { owner: process.argv[2], repo: process.argv[3] };
 
 if (!gitRepo.owner || !gitRepo.repo) {
-  console.log("Wrong number of arguments!!\nCorrect Format: node download_avatars.js owner repo");  
+  console.log("Wrong number of arguments!!\nCorrect Format: node download_avatars.js owner repo");
   return;
 }
 
@@ -25,14 +25,6 @@ function getRepoContributors(repoOwner, repoName, cb) {
   });
 }
 
-getRepoContributors(gitRepo.owner, gitRepo.repo, function (err, result) {
-  console.log("Errors:", err);
-  result.forEach(element => {
-    let path = "./avatars/" + element.login + ".jpg";
-    downloadImageByURL(element.avatar_url, path);
-  });
-});
-
 function downloadImageByURL(url, filePath) {
   request.get(url)
     .on('error', function (err) {
@@ -44,4 +36,11 @@ function downloadImageByURL(url, filePath) {
     .pipe(fs.createWriteStream(filePath));
 }
 
+getRepoContributors(gitRepo.owner, gitRepo.repo, function (err, result) {
+  console.log("Errors:", err);
+  result.forEach(element => {
+    let path = "./avatars/" + element.login + ".jpg";
+    downloadImageByURL(element.avatar_url, path);
+  });
+});
 
