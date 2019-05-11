@@ -38,9 +38,13 @@ function downloadImageByURL(url, filePath) {
 
 getRepoContributors(gitRepo.owner, gitRepo.repo, function (err, result) {
   console.log("Errors:", err);
-  result.forEach(element => {
+  result.forEach((element, index) => {
     let path = "./avatars/" + element.login + ".jpg";
     downloadImageByURL(element.avatar_url, path);
+    if(index === result.length) {
+      console.log("Downloaded: " + result.length + "Avatars!!")
+    }
+
   });
 });
 
